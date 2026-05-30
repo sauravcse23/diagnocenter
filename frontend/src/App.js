@@ -3,8 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 // ─── API Helper ────────────────────────────────────────────────────────────────
 const api = async (path, options = {}) => {
   const token = localStorage.getItem('dc_token');
-  const res = await fetch(`/api${path}`, {
-    headers: {
+const res = await fetch(`${process.env.REACT_APP_API_URL || ''}/api${path}`, {    headers: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
