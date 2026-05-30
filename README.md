@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# 🏥 DiagnoCenter – Full-Stack Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A complete web application for managing a diagnosis center — patients, doctors, reports, payments, and referral tracking.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📁 Project Structure
 
-### `npm start`
+```
+diagnocenter/
+├── backend/          ← Node.js + Express + SQLite API
+│   ├── server.js
+│   ├── db.js
+│   ├── .env
+│   ├── package.json
+│   └── routes/
+│       ├── auth.js
+│       ├── patients.js
+│       ├── doctors.js
+│       ├── reports.js
+│       ├── payments.js
+│       └── dashboard.js
+└── frontend/         ← React web app
+    ├── package.json
+    └── src/
+        ├── App.js
+        └── index.js
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Setup Instructions
 
-### `npm test`
+### Prerequisites
+- Node.js v18 or higher (https://nodejs.org)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### Step 1 — Setup Backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+cd diagnocenter/backend
+npm install
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+You should see:
+```
+✅ Default admin user created (admin / admin123)
+✅ DiagnoCenter backend running at http://localhost:5000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> The SQLite database file `diagnocenter.db` is created automatically on first run.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step 2 — Setup Frontend (new terminal)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+cd diagnocenter/frontend
+npm install
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Your browser will open at **http://localhost:3000**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🔐 Login
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Username | Password  |
+|----------|-----------|
+| admin    | admin123  |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## ✅ Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Module | Description |
+|--------|-------------|
+| **Dashboard** | Today's patients, revenue, pending reports, top doctors |
+| **Patients** | Register patients with test type, referring doctor, fee |
+| **Doctors** | Add referring doctors, see total referral count live |
+| **Reports** | Update report findings, impression, status per patient |
+| **Payments** | Record payments (Cash/UPI/Card/Insurance), track dues |
+| **Referral Analytics** | Leaderboard of doctors by patient count + revenue |
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🗄️ Database
 
-### Making a Progressive Web App
+- Uses **SQLite** (file-based, no installation needed)
+- Database file: `backend/diagnocenter.db`
+- Auto-created on first run
+- Tables: `users`, `patients`, `doctors`, `reports`, `payments`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🔧 Development Tips
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Backend runs on **port 5000**, frontend on **port 3000**
+- The frontend `package.json` has `"proxy": "http://localhost:5000"` so API calls work seamlessly
+- For auto-reload during development, install nodemon: `npm install -g nodemon` then use `npm run dev` in the backend folder
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🔄 To Add More Staff Users
 
-### `npm run build` fails to minify
+Use the register endpoint (from backend terminal or Postman):
+```
+POST http://localhost:5000/api/auth/register
+{ "username": "staff1", "password": "pass123", "name": "Ramesh Kumar", "role": "staff" }
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📦 For Production Deployment
+
+1. Run `npm run build` in the frontend folder
+2. Serve the `build/` folder with a static file server or Nginx
+3. Change `JWT_SECRET` in `backend/.env` to a long random string
+4. Use PM2 to keep the backend running: `pm2 start server.js`
